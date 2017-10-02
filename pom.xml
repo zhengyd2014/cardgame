@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>cardgame</groupId>
+	<artifactId>card-game</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>Card Game</name>
+
+
+	<properties>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+
+
+		<!-- dependency versions -->
+		<!-- unit test -->
+		<junit.version>4.12</junit.version>
+		<!-- other helpful libraries -->
+		<gson.version>2.3.1</gson.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- unit test -->
+			<dependency>
+				<!-- Junit @see http://junit.org/ -->
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+
+			</dependency>
+
+			<dependency>
+				<!-- JSON handling @see https://github.com/google/gson -->
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<!-- Filter resources in "process-resources" phase @link http://maven.apache.org/plugins/maven-resources-plugin/examples/filter.html -->
+			<resource>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/main/resources</directory>
+			</resource>
+		</resources>
+		<testResources>
+			<!-- Filter resources in "process-resources" phase @link http://maven.apache.org/plugins/maven-resources-plugin/examples/filter.html -->
+			<testResource>
+				<filtering>true</filtering>
+				<directory>${basedir}/src/test/resources</directory>
+			</testResource>
+		</testResources>
+
+	</build>
+
+
+	<profiles>
+
+		<profile>
+			<id>enable-test</id>
+			<activation>
+				<file>
+					<exists>${basedir}/src/test/java</exists>
+				</file>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+					<scope>test</scope>
+				</dependency>
+
+				<dependency>
+					<!-- JSON handling @see https://github.com/google/gson -->
+					<groupId>com.google.code.gson</groupId>
+					<artifactId>gson</artifactId>
+					<version>${gson.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+</project>
