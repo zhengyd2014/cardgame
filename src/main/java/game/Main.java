@@ -56,7 +56,7 @@ public class Main {
                     try {
                         game.play(GameCommand.valueOf(command));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // e.printStackTrace();
                         System.out.println(command + " not supported");
                     }
             }

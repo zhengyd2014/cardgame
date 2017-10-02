@@ -11,3 +11,8 @@ a java program to demo how to use the deck of cards API (http://deckofcardsapi.c
 2. Once the round is over, the user can pull another card from the deck or to reshuffle the deck or to
    start a new game.
 
+# How to run
+
+1. check out code from git repository
+2. mvn exec:java -e -Dexec.mainClass="game.Main"
+
