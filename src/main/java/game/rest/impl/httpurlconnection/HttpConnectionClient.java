@@ -21,13 +21,25 @@ import java.util.logging.Logger;
 public class HttpConnectionClient implements Client{
 
     private int connectionTimeout = 3000;
+    private boolean bContentCompression = true;
 
     public int getConnectionTimeout() {
         return connectionTimeout;
     }
 
-    public void setConnectionTimeout(int connectionTimeout) {
+    public HttpConnectionClient setConnectionTimeout(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    public HttpConnectionClient disableContentCompression() {
+        this.bContentCompression = false;
+        return this;
+    }
+
+    public HttpConnectionClient enableContentCompression() {
+        this.bContentCompression = true;
+        return this;
     }
 
     @Override
