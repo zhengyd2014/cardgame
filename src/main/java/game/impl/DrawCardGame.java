@@ -3,6 +3,7 @@ package game.impl;
 import game.manager.CardManager;
 import game.manager.RestfulCardManager;
 import game.model.*;
+import game.rest.impl.httpurlconnection.HttpConnectionClient;
 import game.util.RestClient;
 
 import java.io.Serializable;
@@ -26,7 +27,7 @@ public class DrawCardGame implements CardGame, Serializable {
     }
 
     public void init() {
-        manager = new RestfulCardManager(new RestClient());
+        manager = new RestfulCardManager(new HttpConnectionClient());
         hand = new DrawCardHand("player1");
         deck = manager.newDeck();
     }

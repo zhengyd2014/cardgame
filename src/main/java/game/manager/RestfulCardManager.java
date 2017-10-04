@@ -1,12 +1,13 @@
 package game.manager;
 
 import com.google.gson.Gson;
-import game.manager.CardManager;
 import game.model.Card;
 import game.model.Deck;
 import game.response.DrawCardResponse;
 import game.response.DeckResponse;
-import game.util.RestClient;
+import game.rest.api.Client;
+import game.rest.api.HttpMethodName;
+import game.rest.impl.httpurlconnection.HttpConnectionRequest;
 import game.util.ResponseHandler;
 
 import java.util.List;
@@ -21,15 +22,19 @@ public class RestfulCardManager implements CardManager {
     private static String RESHUFFLE_URL = "https://deckofcardsapi.com/api/deck/%s/shuffle/";
     private static String NEW_DECK_URL = "https://deckofcardsapi.com/api/deck/new/";
 
-    private RestClient restClient;
 
-    public RestfulCardManager(RestClient client) {
+    private Client restClient;
+
+    public RestfulCardManager(Client client) {
         this.restClient = client;
     }
 
     @Override
     public Deck newDeck() {
-        String response = restClient.getJSON(NEW_DECK_URL);
+        HttpConnectionRequest request = new HttpConnectionRequest();
+        request.setHttpMethod(HttpMethodName.GET);
+        request.setUrl(NEW_DECK_URL);
+        String response = restClient.execute(request).getContent();
         DeckResponse scr= new Gson().fromJson(response, DeckResponse.class);
 
         return ResponseHandler.DeckResponseToDeck(scr);
@@ -38,7 +43,10 @@ public class RestfulCardManager implements CardManager {
     @Override
     public Deck shuffle(int deckCount) {
         String url = String.format(SHUFFLE_URL, String.valueOf(deckCount));
-        String response = restClient.getJSON(url);
+        HttpConnectionRequest request = new HttpConnectionRequest();
+        request.setHttpMethod(HttpMethodName.GET);
+        request.setUrl(url);
+        String response = restClient.execute(request).getContent();
         DeckResponse scr= new Gson().fromJson(response, DeckResponse.class);
 
         return ResponseHandler.DeckResponseToDeck(scr);
@@ -47,7 +55,10 @@ public class RestfulCardManager implements CardManager {
     @Override
     public List<Card> drawCards(Deck deck, int cardCount) {
         String url = String.format(DRAW_CARD_URL, deck.getId(), String.valueOf(cardCount));
-        String response = restClient.getJSON(url);
+        HttpConnectionRequest request = new HttpConnectionRequest();
+        request.setHttpMethod(HttpMethodName.GET);
+        request.setUrl(url);
+        String response = restClient.execute(request).getContent();
         DrawCardResponse dcr = new Gson().fromJson(response, DrawCardResponse.class);
 
         deck.setRemining(dcr.getRemaining());
@@ -57,6 +68,9 @@ public class RestfulCardManager implements CardManager {
     @Override
     public void reShuffle(Deck deck) {
         String url = String.format(RESHUFFLE_URL, deck.getId());
-        restClient.getJSON(url);
+        HttpConnectionRequest request = new HttpConnectionRequest();
+        request.setHttpMethod(HttpMethodName.GET);
+        request.setUrl(url);
+        restClient.execute(request).getContent();
     }
 }
